@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Iterator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,5 +50,26 @@ class ProductServiceImplTest {
         Product savedProduct = productList.get(0);
         assertEquals(product.getProductId(), savedProduct.getProductId());
         verify(productRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testEdit() {
+        Product product = new Product();
+        product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(100);
+
+        when(productRepository.edit(product)).thenReturn(product);
+        Product editedProduct = productService.edit(product);
+
+        assertEquals(product.getProductId(), editedProduct.getProductId());
+        verify(productRepository, times(1)).edit(product);
+    }
+
+    @Test
+    void testDelete() {
+        String productId = "eb558e9f-1c39-460e-8860-71af6af63bd6";
+        productService.delete(productId);
+        verify(productRepository, times(1)).delete(productId);
     }
 }
