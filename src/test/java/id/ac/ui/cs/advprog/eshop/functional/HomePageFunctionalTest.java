@@ -5,19 +5,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ExtendWith(SeleniumJupiter.class)
-class CreateProductFunctionalTest {
+class HomePageFunctionalTest {
 
     @LocalServerPort
     private int serverPort;
@@ -33,14 +31,16 @@ class CreateProductFunctionalTest {
     }
 
     @Test
-    void createProduct_isCorrect(ChromeDriver driver) throws Exception {
-        driver.get(baseUrl + "/product/create");
-        driver.findElement(By.name("productName")).sendKeys("Sampo Cap Bambang");
-        driver.findElement(By.name("productQuantity")).sendKeys("20");
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
+    void pageTitle_isCorrect(ChromeDriver driver) throws Exception {
+        driver.get(baseUrl);
+        String pageTitle = driver.getTitle();
+        assertEquals("ADV Shop", pageTitle);
+    }
 
-        String pageSource = driver.getPageSource();
-        assertTrue(pageSource.contains("Sampo Cap Bambang"));
-        assertTrue(pageSource.contains("20"));
+    @Test
+    void welcomeMessage_homePage_isCorrect(ChromeDriver driver) throws Exception {
+        driver.get(baseUrl);
+        String welcomeMessage = driver.findElement(By.tagName("h3")).getText();
+        assertEquals("Welcome", welcomeMessage);
     }
 }
