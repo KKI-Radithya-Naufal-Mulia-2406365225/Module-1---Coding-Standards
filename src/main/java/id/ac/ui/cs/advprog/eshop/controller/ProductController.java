@@ -56,4 +56,10 @@ public class ProductController {
         service.delete(productId);
         return "redirect:../list";
     }
+
+    public void uselessMethod() {
+        if (true) {
+            // PMD will hate this empty block
+        }
+    }
 }
