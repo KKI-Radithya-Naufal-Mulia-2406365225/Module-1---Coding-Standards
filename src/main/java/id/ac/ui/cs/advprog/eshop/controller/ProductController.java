@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import java.util.Scanner;
-
 @Controller
 @RequestMapping("/product")
 public class ProductController {
@@ -55,11 +53,5 @@ public class ProductController {
     public String deleteProduct(@PathVariable("productId") String productId) {
         service.delete(productId);
         return "redirect:../list";
-    }
-
-    public void uselessMethod() {
-        if (true) {
-            // PMD will hate this empty block
-        }
     }
 }
