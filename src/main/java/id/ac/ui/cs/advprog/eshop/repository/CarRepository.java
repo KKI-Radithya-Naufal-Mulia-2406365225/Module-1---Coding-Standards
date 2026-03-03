@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public class CarRepository {
+public class CarRepository implements ICarRepository {
     static int id = 0;
     private List<Car> carData = new ArrayList<>();
 
@@ -34,17 +34,13 @@ public class CarRepository {
     }
 
     public Car update(String id, Car updatedCar) {
-        for (int i = 0; i < carData.size(); i++) {
-            Car car = carData.get(i);
+        for (Car car : carData) {
             if (car.getCarId().equals(id)) {
-                // Update the existing car with the new information
-                car.setCarName(updatedCar.getCarName());
-                car.setCarColor(updatedCar.getCarColor());
-                car.setCarQuantity(updatedCar.getCarQuantity());
+                car.update(updatedCar);
                 return car;
             }
         }
-        return null; // Handle the case where the car is not found
+        return null;
     }
 
     public void delete(String id) {
