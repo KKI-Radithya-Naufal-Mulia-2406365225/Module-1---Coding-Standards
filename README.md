@@ -20,3 +20,11 @@ For Secure Coding, I use UUID for the ID. I think this is better than simple num
 
 1. I fix the unused import and empty if statement that PMD catch. My strategy is i open github action log to see the error line, then i just delete the useless code in IntelliJ and push again.
 2. Yes, i think my project already meet the CI/CD definition. For CI, github action will auto run the test and PMD scan everytime i push my code. Then for CD, Render will automatic deploy my app to internet when i merge the code to main branch (https://module-1-coding-standards.onrender.com/product/list).
+
+# Module 3
+
+### Reflection
+
+1. I apply all five SOLID principle in my project. For SRP I separate CarController, and for ISP I make sure ICarRepository only have methods for car so it is not mixed. I also fix OCP by moving update to model, delete extend for LSP, and use interface for DIP.
+2. The advantage is my code become more clean and very easy to maintain. For example with SRP, if I want to edit Car code, I don't need to open ProductController file at all.
+3. If I don't use SOLID, my code will become a very confusing code for me to read. For example if I don't use SRP, the car feature can get error just because someone edit the product code wrong.
