@@ -27,4 +27,11 @@ For Secure Coding, I use UUID for the ID. I think this is better than simple num
 
 1. I apply all five SOLID principle in my project. For SRP I separate CarController, and for ISP I make sure ICarRepository only have methods for car so it is not mixed. I also fix OCP by moving update to model, delete extend for LSP, and use interface for DIP.
 2. The advantage is my code become more clean and very easy to maintain. For example with SRP, if I want to edit Car code, I don't need to open ProductController file at all.
-3. If I don't use SOLID, my code will become a very confusing code for me to read. For example if I don't use SRP, the car feature can get error just because someone edit the product code wrong.
+3. If I don't use SOLID , my code will become a very confusing code for me to read. For example if I don't use SRP, the car feature can get error just because someone edit the product code wrong.
+
+# Module 4
+
+### Reflection
+
+1. The TDD flow is very useful for me because it forces me to think about the requirements and the rules before writing the code. By following the Red-Green-Refactor cycle, I feel more confident that my implementation is correct and it helps me catch if there is a bug.
+2. My tests follow F.I.R.S.T. because they run very fast and do not depend on each other. They are self-validating because they give a clear green result, and I could write them before the implementation.
