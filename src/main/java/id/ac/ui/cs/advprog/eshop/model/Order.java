@@ -2,7 +2,6 @@ package id.ac.ui.cs.advprog.eshop.model;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +24,12 @@ public class Order {
 
         if (this.products.isEmpty()) {
             throw new IllegalArgumentException();
+        } else {
+            for (Product product : this.products) {
+                if (product.getProductQuantity() < 1) {
+                    throw new IllegalArgumentException();
+                }
+            }
         }
     }
 
