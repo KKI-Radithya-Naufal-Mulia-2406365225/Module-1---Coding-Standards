@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -79,10 +80,11 @@ class OrderServiceImplTest {
 
     @Test
     void testUpdateStatusInvalidOrderId() {
-        doReturn(null).when(orderRepository).findById("invalid-id");
+        doReturn(null).when(orderRepository).findById("zczc");
 
-        assertThrows(IllegalArgumentException.class, () ->
-                orderService.updateStatus("invalid-id", "SUCCESS"));
+        assertThrows(NoSuchElementException.class, () -> {
+            orderService.updateStatus("zczc", "SUCCESS");
+        });
 
         verify(orderRepository, times(0)).save(any(Order.class));
     }
@@ -92,15 +94,16 @@ class OrderServiceImplTest {
         Order order = orders.get(0);
         doReturn(order).when(orderRepository).findById(order.getId());
 
-        assertThrows(IllegalArgumentException.class, () ->
-                orderService.updateStatus(order.getId(), "MEOW"));
+        assertThrows(IllegalArgumentException.class, () -> {
+            orderService.updateStatus(order.getId(), "MEOW");
+        });
 
         verify(orderRepository, times(0)).save(any(Order.class));
     }
 
     @Test
     void testFindByIdIfIdFound() {
-        Order order = orders.get(0);
+        Order order = orders.get(1);
         doReturn(order).when(orderRepository).findById(order.getId());
 
         Order result = orderService.findById(order.getId());
@@ -109,27 +112,26 @@ class OrderServiceImplTest {
 
     @Test
     void testFindByIdIfIdNotFound() {
-        doReturn(null).when(orderRepository).findById("invalid-id");
-
-        Order result = orderService.findById("invalid-id");
+        doReturn(null).when(orderRepository).findById("zczc");
+        Order result = orderService.findById("zczc");
         assertNull(result);
     }
 
     @Test
     void testFindAllByAuthorIfAuthorCorrect() {
-        Order order = orders.get(0);
+        Order order = orders.get(1);
         doReturn(orders).when(orderRepository).findAllByAuthor(order.getAuthor());
 
-        List<Order> result = orderService.findAllByAuthor(order.getAuthor());
-        assertEquals(2, result.size());
+        List<Order> results = orderService.findAllByAuthor(order.getAuthor());
+        assertEquals(2, results.size());
     }
 
     @Test
     void testFindAllByAuthorIfAllLowercase() {
-        Order order = orders.get(0);
+        Order order = orders.get(1);
         doReturn(new ArrayList<Order>()).when(orderRepository).findAllByAuthor(order.getAuthor().toLowerCase());
 
-        List<Order> result = orderService.findAllByAuthor(order.getAuthor().toLowerCase());
-        assertTrue(result.isEmpty());
+        List<Order> results = orderService.findAllByAuthor(order.getAuthor().toLowerCase());
+        assertTrue(results.isEmpty());
     }
 }
