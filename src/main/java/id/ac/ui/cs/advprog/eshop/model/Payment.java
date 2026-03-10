@@ -6,23 +6,31 @@ import java.util.Map;
 
 @Getter
 public class Payment {
-    String id;
-    String method;
-    String status;
-    Map<String, String> paymentData;
-    Order order;
+    private String id;
+    private String method;
+    private String status;
+    private Map<String, String> paymentData;
+    private Order order;
 
     public Payment(String id, String method, Map<String, String> paymentData, Order order) {
         this.id = id;
         this.order = order;
         this.paymentData = paymentData;
 
-        if (!method.equals("CASH_ON_DELIVERY") && !method.equals("VOUCHER")) {
+        String[] methodList = {"VOUCHER", "CASH_ON_DELIVERY"};
+        if (Arrays.stream(methodList).noneMatch(item -> item.equals(method))) {
             throw new IllegalArgumentException();
         }
         this.method = method;
 
-        if (method.equals("CASH_ON_DELIVERY")) {
+        if (method.equals("VOUCHER")) {
+            String voucherCode = paymentData.get("voucherCode");
+            if (isValidVoucher(voucherCode)) {
+                this.status = "SUCCESS";
+            } else {
+                this.status = "REJECTED";
+            }
+        } else if (method.equals("CASH_ON_DELIVERY")) {
             String address = paymentData.get("deliveryAddress");
             String city = paymentData.get("city");
             if (address == null || address.isEmpty() || city == null || city.isEmpty()) {
@@ -30,14 +38,18 @@ public class Payment {
             } else {
                 this.status = "SUCCESS";
             }
-        } else {
-            this.status = "WAITING_PAYMENT";
         }
     }
 
-    public Payment(String id, String method, Map<String, String> paymentData, Order order, String status) {
-        this(id, method, paymentData, order);
-        this.setStatus(status);
+    private boolean isValidVoucher(String code) {
+        if (code == null || code.length() != 16 || !code.startsWith("PBP")) {
+            return false;
+        }
+        int digitCount = 0;
+        for (char c : code.toCharArray()) {
+            if (Character.isDigit(c)) digitCount++;
+        }
+        return digitCount == 8;
     }
 
     public void setStatus(String status) {

@@ -20,7 +20,6 @@ public class PaymentRepository {
             }
             i += 1;
         }
-
         paymentData.add(payment);
         return payment;
     }
