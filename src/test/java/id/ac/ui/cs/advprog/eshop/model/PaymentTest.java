@@ -18,13 +18,18 @@ class PaymentTest {
         List<Product> products = new ArrayList<>();
         Product product = new Product();
         product.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
+        product.setProductName("Sampo Cap Bambang");
+        product.setProductQuantity(2);
         products.add(product);
-        this.order = new Order("13652556-012a-4c07-b546-54eb1396d79b", products, 1708560000L, "Safira Sudrajat");
+
+        this.order = new Order("13652556-012a-4c07-b546-54eb1396d79b",
+                products, 1708560000L, "Safira Sudrajat");
     }
 
     @Test
     void testCreatePaymentInvalidMethod() {
-        assertThrows(IllegalArgumentException.class, () -> new Payment("id", "MEOW", paymentData, order));
+        assertThrows(IllegalArgumentException.class, () ->
+                new Payment("id", "INVALID_METHOD", paymentData, order));
     }
 
     @Test
@@ -36,7 +41,7 @@ class PaymentTest {
 
     @Test
     void testCreatePaymentCashOnDeliverySuccess() {
-        paymentData.put("deliveryAddress", "Jalan PBP");
+        paymentData.put("deliveryAddress", "Fasilkom UI");
         paymentData.put("city", "Depok");
         Payment payment = new Payment("id", "CASH_ON_DELIVERY", paymentData, order);
         assertEquals("SUCCESS", payment.getStatus());
@@ -44,7 +49,8 @@ class PaymentTest {
 
     @Test
     void testCreatePaymentCashOnDeliveryRejected() {
-        paymentData.put("deliveryAddress", "");
+        paymentData.put("deliveryAddress", ""); // Invalid empty address
+        paymentData.put("city", "Depok");
         Payment payment = new Payment("id", "CASH_ON_DELIVERY", paymentData, order);
         assertEquals("REJECTED", payment.getStatus());
     }
