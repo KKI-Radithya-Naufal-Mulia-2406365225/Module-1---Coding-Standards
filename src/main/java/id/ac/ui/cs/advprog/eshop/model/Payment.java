@@ -41,6 +41,11 @@ public class Payment {
         }
     }
 
+    public Payment(String id, String method, Map<String, String> paymentData, Order order, String status) {
+        this(id, method, paymentData, order);
+        this.setStatus(status);
+    }
+
     private boolean isValidVoucher(String code) {
         if (code == null || code.length() != 16 || !code.startsWith("PBP")) {
             return false;
